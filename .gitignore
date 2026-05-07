@@ -1,5 +1,11 @@
 node_modules/
+.cache/
 dist/
 build/
 .env
+.env.*
+uploads/
+logs/
+*.log
+*.pdf
 .DS_Store
