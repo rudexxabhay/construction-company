@@ -459,6 +459,63 @@ body {
   filter: blur(6px);
 }
 
+.floating-call {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 196, 0, 0.9);
+  background: #050505;
+  color: #f5c400;
+  padding: 0 18px 0 14px;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28), 0 0 24px rgba(245, 196, 0, 0.18);
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.floating-call:hover {
+  background: #f5c400;
+  color: #050505;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34), 0 0 34px rgba(245, 196, 0, 0.38);
+}
+
+.floating-call__ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
+  border: 1px solid rgba(245, 196, 0, 0.42);
+  animation: floatingCallPulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.floating-call__icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(245, 196, 0, 0.14);
+}
+
+.floating-call__label {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
 @keyframes heroFloat {
   0%, 100% {
     transform: translateY(0) rotateZ(0deg);
@@ -474,6 +531,17 @@ body {
   }
   50% {
     transform: translateX(10px);
+  }
+}
+
+@keyframes floatingCallPulse {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  70%, 100% {
+    opacity: 0;
+    transform: scale(1.22);
   }
 }
 
@@ -497,5 +565,30 @@ body {
   .hero-helmet {
     width: 58px;
     height: 34px;
+  }
+
+  .floating-call {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    min-height: 50px;
+    width: 50px;
+    padding: 0;
+  }
+
+  .floating-call__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .floating-call__label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-call,
+  .floating-call__ring {
+    animation: none;
+    transition: none;
   }
 }

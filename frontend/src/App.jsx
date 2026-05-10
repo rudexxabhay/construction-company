@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import FloatingCallButton from "./components/FloatingCallButton";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import Home from "./pages/Home";
@@ -29,6 +30,7 @@ const PublicLayout = ({ children }) => (
   <>
     <Navbar />
     {children}
+    <FloatingCallButton />
     <Footer />
   </>
 );
