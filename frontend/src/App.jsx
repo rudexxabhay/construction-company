@@ -25,6 +25,10 @@ import ItemsAdmin from "./admin/ItemsAdmin";
 import ClientsAdmin from "./admin/ClientsAdmin";
 import DocumentsAdmin from "./admin/DocumentsAdmin";
 import DocumentEditor from "./admin/DocumentEditor";
+import AgreementsAdmin from "./admin/AgreementsAdmin";
+import AgreementEditor from "./admin/AgreementEditor";
+import AgreementPreview from "./admin/AgreementPreview";
+import AgreementTemplateAdmin from "./admin/AgreementTemplateAdmin";
 
 const PublicLayout = ({ children }) => (
   <>
@@ -57,6 +61,11 @@ const App = () => (
         <Route path="trusted" element={<TrustedAdmin />} />
         <Route path="items" element={<ItemsAdmin />} />
         <Route path="clients" element={<ClientsAdmin />} />
+        <Route path="agreements" element={<AgreementsAdmin />} />
+        <Route path="agreements/template" element={<AgreementTemplateAdmin />} />
+        <Route path="agreements/create" element={<AgreementEditor />} />
+        <Route path="agreements/:id/edit" element={<AgreementEditor />} />
+        <Route path="agreements/:id/preview" element={<AgreementPreview />} />
         <Route path="estimates" element={<DocumentsAdmin type="estimate" />} />
         <Route path="quotations" element={<DocumentsAdmin type="quotation" />} />
         <Route path="invoices" element={<DocumentsAdmin type="invoice" />} />

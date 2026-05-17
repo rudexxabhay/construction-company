@@ -32,50 +32,17 @@ const Home = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-black">
-        <div className="absolute inset-0 hero-construction-bg" />
-        <div className="relative mx-auto grid min-h-[560px] max-w-[1200px] items-center gap-8 px-[15px] py-10 md:min-h-[680px] md:grid-cols-[minmax(0,0.95fr)_minmax(320px,1.05fr)] md:px-5 md:py-20">
-          <div className="max-w-[600px] text-left text-white">
-            <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-chrome sm:text-sm">Premium Construction Company</p>
-            <h1 className="text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">Complete construction services</h1>
-            <p className="mt-5 max-w-[600px] text-sm leading-6 text-zinc-200 sm:text-lg sm:leading-8">{settings.heroSubtitle}</p>
-            <div className="mt-6 flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:justify-start md:mt-8">
-              <Link to="/contact" className="btn-primary">Get Estimate</Link>
-              <Link to="/projects" className="btn-dark border border-white/20">View Projects</Link>
+      <section className="hero-section relative overflow-hidden">
+        <div className="hero-overlay" aria-hidden="true" />
+        <div className="hero-content-wrap">
+          <div className="hero-copy">
+            <p className="hero-eyebrow">Premium Construction Company</p>
+            <h1 className="hero-title">{settings.heroTitle}</h1>
+            <p className="hero-subtitle">{settings.heroSubtitle}</p>
+            <div className="hero-actions">
+              <Link to="/contact" className="hero-cta hero-cta-primary">Get Estimate</Link>
+              <Link to="/projects" className="hero-cta hero-cta-secondary">View Projects</Link>
             </div>
-          </div>
-          <div className="hero-build-scene" aria-hidden="true">
-            <div className="hero-glow" />
-            <div className="hero-crane">
-              <span className="crane-mast" />
-              <span className="crane-arm" />
-              <span className="crane-cable" />
-              <span className="crane-hook" />
-            </div>
-            <div className="hero-blueprint">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="hero-building">
-              <div className="roof" />
-              <div className="wall front">
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="wall side" />
-              <div className="door" />
-            </div>
-            <div className="hero-bricks">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="hero-helmet" />
-            <div className="hero-tool" />
-            <div className="hero-shadow" />
           </div>
         </div>
       </section>
