@@ -18,9 +18,29 @@ const protect = async (req, res, next) => {
       return res.status(403).json({ message: "Admin access required" });
     }
 
-    const user = await User.findById(decoded.id).select("-password");
+    let user = null;
+    if (decoded.id && /^[0-9a-fA-F]{24}$/.test(decoded.id)) {
+      user = await User.findById(decoded.id).select("-password");
+    }
 
-    if (!user || user.role !== "admin") {
+    if (!user && decoded.email) {
+      user = await User.findOne({ email: decoded.email }).select("-password");
+    }
+
+    if (!user && decoded.id && String(decoded.id).includes("@")) {
+      user = await User.findOne({ email: decoded.id }).select("-password");
+    }
+
+    if (!user) {
+      user = {
+        _id: decoded.id,
+        name: decoded.name || "Construction Admin",
+        email: decoded.email || decoded.id,
+        role: decoded.role
+      };
+    }
+
+    if (user.role !== "admin") {
       return res.status(403).json({ message: "Admin access required" });
     }
 

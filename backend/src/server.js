@@ -1,6 +1,11 @@
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 console.log("ENV CHECK:", process.env.CLOUDINARY_CLOUD_NAME);
+console.log("[AUTH DEBUG] server env", {
+  envEmail: process.env.ADMIN_EMAIL?.trim().toLowerCase() || "",
+  envName: process.env.ADMIN_NAME || "",
+  envPasswordLength: process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.trim().length : 0
+});
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");

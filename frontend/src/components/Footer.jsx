@@ -3,20 +3,18 @@ import { Link } from "react-router-dom";
 import { Mail, MapPin, Phone } from "lucide-react";
 import api from "../api/axios";
 import { settingsFallback } from "../data/fallbackData";
+import logoAsset from "../assets/Logo.png";
 
 const Footer = () => {
   const [settings, setSettings] = useState(settingsFallback);
-  const [logo, setLogo] = useState(null);
 
   useEffect(() => {
     api.get("/api/settings")
       .then((res) => {
         setSettings({ ...settingsFallback, ...res.data });
-        setLogo(res.data.logoUrl || null);
       })
       .catch(() => {
         setSettings(settingsFallback);
-        setLogo(null);
       });
   }, []);
 
@@ -25,15 +23,21 @@ const Footer = () => {
       <div className="container-pad grid gap-10 py-12 md:grid-cols-2 md:py-16 lg:grid-cols-4">
         <div className="min-w-0">
           <div className="flex items-center gap-3">
-            {logo && <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-chrome p-1.5"><img className="max-h-full max-w-full object-contain" src={`${logo}?v=${Date.now()}`} alt="logo" /></span>}
-            <span className="min-w-0 break-words text-xl font-black">{settings.companyName}</span>
+            <img className="site-brand-logo h-11 w-auto shrink-0" src={logoAsset} alt="QUALITY CONSTRUCTION logo" />
+            <span className="site-brand-copy min-w-0" aria-hidden="true">
+              <span>QUALITY</span>
+              <span>CONSTRUCTION</span>
+            </span>
           </div>
           <p className="mt-5 text-sm leading-6 text-zinc-400">{settings.footerDescription}</p>
         </div>
         <div className="min-w-0">
           <h4 className="mb-4 font-black">Quick Links</h4>
           <div className="grid gap-3 text-sm text-zinc-400">
-            {["About", "Services", "Projects", "Blog", "Contact"].map((item) => <Link key={item} to={`/${item.toLowerCase()}`} className="transition hover:text-chrome">{item}</Link>)}
+            <Link to="/about" className="transition hover:text-chrome">About</Link>
+            <Link to="/services" className="transition hover:text-chrome">Services</Link>
+            <Link to="/blog" className="transition hover:text-chrome">Blogs</Link>
+            <Link to="/contact" className="transition hover:text-chrome">Contact</Link>
           </div>
         </div>
         <div className="min-w-0">

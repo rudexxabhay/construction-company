@@ -8,7 +8,6 @@ import AdminLayout from "./layouts/AdminLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
-import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
 import Contact from "./pages/Contact";
@@ -44,11 +43,11 @@ const App = () => (
     <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
     <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
     <Route path="/services" element={<PublicLayout><Services /></PublicLayout>} />
-    <Route path="/projects" element={<PublicLayout><Projects /></PublicLayout>} />
     <Route path="/blog" element={<PublicLayout><Blog /></PublicLayout>} />
     <Route path="/blog/:id" element={<PublicLayout><BlogDetails /></PublicLayout>} />
     <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
     <Route path="/admin/login" element={<AdminLogin />} />
+    <Route path="/secure-admin-portal-9483" element={<AdminLogin />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/secure-admin-dashboard" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
