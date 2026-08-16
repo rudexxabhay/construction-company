@@ -6,33 +6,21 @@ import AboutSection from "../components/AboutSection";
 import ServicesShowcase from "../components/ServicesShowcase";
 import ProcessSection from "../components/ProcessSection";
 import WhyChooseUsSection from "../components/WhyChooseUsSection";
-import BlogCard from "../components/BlogCard";
 import HomeContactSection from "../components/HomeContactSection";
 import VideoSection from "../components/VideoSection";
+import VideoShowcase from "../components/VideoShowcase";
 import heroImage from "../assets/Hero.png";
-import { blogsFallback, settingsFallback } from "../data/fallbackData";
+import { settingsFallback } from "../data/fallbackData";
 import useHeroIntro from "../hooks/useHeroIntro";
-import useSectionReveal from "../hooks/useSectionReveal";
 
 const Home = () => {
   const heroRef = useRef(null);
-  const blogSectionRef = useRef(null);
   const [settings, setSettings] = useState(settingsFallback);
-  const [blogs, setBlogs] = useState(blogsFallback);
 
   useHeroIntro(heroRef);
-  useSectionReveal(blogSectionRef, {
-    introSelector: "[data-reveal-intro]",
-    itemSelector: "[data-reveal-item]",
-    start: "top 82%",
-    introY: 18,
-    itemY: 24,
-    itemStagger: 0.1
-  });
 
   useEffect(() => {
     api.get("/api/settings").then((res) => setSettings({ ...settingsFallback, ...res.data })).catch(() => setSettings(settingsFallback));
-    api.get("/api/blogs").then((res) => setBlogs(res.data)).catch(() => setBlogs(blogsFallback));
   }, []);
 
   const heroStats = [
@@ -120,21 +108,8 @@ const Home = () => {
       <ProcessSection />
 
       <WhyChooseUsSection />
-      <section className="bg-zinc-50 py-8 md:py-16" ref={blogSectionRef}>
-        <div className="container-pad">
-          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between md:mb-8" data-reveal-intro>
-            <div>
-              <p className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-chrome sm:text-sm">Blog</p>
-              <h2 className="text-2xl font-black leading-tight text-black sm:text-4xl">Construction insights</h2>
-            </div>
-            <Link to="/blog" className="inline-flex w-fit items-center gap-2 rounded-md border border-chrome px-4 py-2 text-[11px] font-bold text-chrome transition-colors duration-200 hover:bg-chrome hover:text-black">
-              <span>View All Blogs</span>
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{blogs.slice(0, 3).map((blog) => <div key={blog._id} className="min-w-0" data-reveal-item><BlogCard blog={blog} /></div>)}</div>
-        </div>
-      </section>
+
+      <VideoShowcase />
 
       <VideoSection videos={settings.videos || []} />
 

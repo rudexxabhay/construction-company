@@ -2022,3 +2022,194 @@ textarea {
     transition: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   VIDEO SHOWCASE SECTION  (vs- prefix)
+═══════════════════════════════════════════════════════════ */
+
+.vs-section {
+  background: #0e0e0f;
+  padding: 48px 0;
+}
+
+/* Header ─────────────────────────────────────────────────── */
+.vs-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.vs-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f5c400;
+}
+
+.vs-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.vs-desc {
+  margin: 0 auto;
+  max-width: 520px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #a1a1aa;
+}
+
+/* Grid ───────────────────────────────────────────────────── */
+.vs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1023px) {
+  .vs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 767px) {
+  .vs-section {
+    padding: 36px 0;
+  }
+
+  .vs-header {
+    margin-bottom: 20px;
+  }
+
+  .vs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 100%;
+  }
+}
+
+/* Card ───────────────────────────────────────────────────── */
+.vs-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  background: #141416;
+  transition: transform 0.28s ease, border-color 0.28s ease;
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* fix iOS border-radius overflow clip */
+}
+
+.vs-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.vs-card--active {
+  border-color: rgba(245, 196, 0, 0.45);
+}
+
+@media (hover: none) {
+  .vs-card:hover {
+    transform: none;
+  }
+}
+
+.vs-card-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Video element (Fills the 9:16 card naturally with zero letterboxing) ── */
+.vs-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Gradient overlay ───────────────────────────────────────── */
+.vs-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+  pointer-events: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Mute / Unmute button ───────────────────────────────────── */
+.vs-mute-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  touch-action: manipulation;
+}
+
+.vs-mute-btn:hover {
+  background: rgba(245, 196, 0, 0.2);
+  border-color: rgba(245, 196, 0, 0.4);
+  color: #f5c400;
+  transform: scale(1.06);
+}
+
+.vs-mute-btn--on {
+  background: rgba(245, 196, 0, 0.25);
+  border-color: rgba(245, 196, 0, 0.5);
+  color: #f5c400;
+}
+
+.vs-mute-btn--on:hover {
+  background: rgba(245, 196, 0, 0.35);
+}
+
+@media (max-width: 480px) {
+  .vs-mute-btn {
+    width: 30px;
+    height: 30px;
+    top: 6px;
+    right: 6px;
+  }
+}
+
+/* Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .vs-card {
+    transition: none;
+  }
+  .vs-mute-btn {
+    transition: none;
+  }
+}
