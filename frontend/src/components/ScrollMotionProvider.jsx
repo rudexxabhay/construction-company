@@ -25,6 +25,7 @@ const ScrollMotionProvider = ({ children }) => {
     lenis.on("scroll", onScroll);
     gsap.ticker.add(onRaf);
     gsap.ticker.lagSmoothing(0);
+    window.__lenis = lenis;
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(refresh).catch(() => {});
@@ -36,6 +37,7 @@ const ScrollMotionProvider = ({ children }) => {
       lenis.off("scroll", onScroll);
       gsap.ticker.remove(onRaf);
       lenis.destroy();
+      if (window.__lenis === lenis) delete window.__lenis;
       window.removeEventListener("load", refresh);
     };
   }, []);

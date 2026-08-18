@@ -1,88 +1,266 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle2 } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Check,
+  Clock3,
+  HardHat,
+  Hammer,
+  Mail,
+  MapPin,
+  MessagesSquare,
+  Phone,
+  Home,
+  ShieldCheck,
+  UsersRound
+} from "lucide-react";
 import api from "../api/axios";
-import SectionTitle from "../components/SectionTitle";
-import ServiceCard from "../components/ServiceCard";
-import { servicesFallback, settingsFallback } from "../data/fallbackData";
-import useHeroIntro from "../hooks/useHeroIntro";
+import { settingsFallback } from "../data/fallbackData";
 import useSectionReveal from "../hooks/useSectionReveal";
 
+const services = [
+  {
+    number: "01",
+    title: "Residential",
+    description: "Custom homes, luxury villas and residential projects built around the client's lifestyle.",
+    icon: Home,
+    items: ["Custom Home Construction", "Luxury Villas", "Home Planning", "Turnkey Solutions"]
+  },
+  {
+    number: "02",
+    title: "Commercial",
+    description: "Modern offices, retail and commercial spaces built for functionality, efficiency and business growth.",
+    icon: Building2,
+    items: ["Office Buildings", "Retail Spaces", "Industrial Buildings", "Warehousing"]
+  },
+  {
+    number: "03",
+    title: "Renovations",
+    description: "Complete renovation, remodeling and structural upgrade solutions for existing properties.",
+    icon: Hammer,
+    items: ["Home Renovation", "Kitchen Upgrades", "Extensions", "Modernization"]
+  }
+];
+
+const benefits = [
+  {
+    icon: ShieldCheck,
+    title: "Quality Assurance",
+    text: "Uncompromised materials, careful supervision, and standards that hold up over time."
+  },
+  {
+    icon: UsersRound,
+    title: "Experienced Team",
+    text: "Skilled professionals bringing practical construction expertise to every phase."
+  },
+  {
+    icon: Clock3,
+    title: "On-Time Delivery",
+    text: "Disciplined scheduling and site coordination to keep work moving on time."
+  },
+  {
+    icon: MessagesSquare,
+    title: "Customer-Focused",
+    text: "Transparent communication, quick updates, and a client-first project approach."
+  }
+];
+
+const contactItems = (settings) => [
+  {
+    icon: Phone,
+    label: "Call Us",
+    value: "+91 9935363400",
+    href: "tel:+919935363400"
+  },
+  {
+    icon: Mail,
+    label: "Email Us",
+    value: "singhindiamzp@gmail.com",
+    href: "mailto:singhindiamzp@gmail.com"
+  },
+  {
+    icon: MapPin,
+    label: "Our Location",
+    value: "Rampur, Kalana, Mirzapur, 231303"
+  },
+  {
+    icon: Clock3,
+    label: "Working Hours",
+    value: settings.workingHours || settingsFallback.workingHours
+  }
+];
+
+const ServiceListItem = ({ text }) => (
+  <li className="services-page__serviceItem">
+    <span className="services-page__serviceBullet" aria-hidden="true">
+      <Check size={11} strokeWidth={3} />
+    </span>
+    <span>{text}</span>
+  </li>
+);
+
+const ServiceCard = ({ number, title, description, icon: Icon, items }) => (
+  <article className="services-page__serviceCard" data-reveal-item>
+    <span className="services-page__serviceBadge" aria-hidden="true">
+      {number}
+    </span>
+    <div className="services-page__serviceIconWrap" aria-hidden="true">
+      <Icon className="services-page__serviceIcon" size={30} strokeWidth={2} />
+    </div>
+    <h3 className="services-page__serviceTitle">{title}</h3>
+    <p className="services-page__serviceDescription">{description}</p>
+    <div className="services-page__serviceRule" aria-hidden="true" />
+    <ul className="services-page__serviceList">
+      {items.map((item) => (
+        <ServiceListItem key={item} text={item} />
+      ))}
+    </ul>
+    <a className="services-page__serviceLink" href="#services-contact" aria-label={`Learn more about ${title}`}>
+      <span>Learn More</span>
+      <ArrowRight size={13} strokeWidth={2.5} />
+    </a>
+  </article>
+);
+
+const BenefitCard = ({ icon: Icon, title, text }) => (
+  <article className="services-page__benefit" data-reveal-item>
+    <div className="services-page__benefitIconWrap" aria-hidden="true">
+      <Icon size={22} strokeWidth={2.1} />
+    </div>
+    <h3 className="services-page__benefitTitle">{title}</h3>
+    <p className="services-page__benefitText">{text}</p>
+  </article>
+);
+
+const ContactItem = ({ icon: Icon, label, value, href }) => {
+  const content = (
+    <>
+      <span className="services-page__contactIconWrap" aria-hidden="true">
+        <Icon size={18} strokeWidth={2.1} />
+      </span>
+      <span className="services-page__contactCopy">
+        <span className="services-page__contactLabel">{label}</span>
+        <span className="services-page__contactValue">{value}</span>
+      </span>
+    </>
+  );
+
+  return href ? (
+    <a className="services-page__contactItem" href={href}>
+      {content}
+    </a>
+  ) : (
+    <div className="services-page__contactItem" role="text">
+      {content}
+    </div>
+  );
+};
+
 const Services = () => {
-  const heroRef = useRef(null);
-  const categoriesRef = useRef(null);
+  const introRef = useRef(null);
   const servicesRef = useRef(null);
-  const [services, setServices] = useState(servicesFallback);
   const [settings, setSettings] = useState(settingsFallback);
 
-  useHeroIntro(heroRef);
-  useSectionReveal(categoriesRef, {
+  useSectionReveal(introRef, {
     introSelector: "[data-reveal-intro]",
     itemSelector: "[data-reveal-item]",
-    start: "top 84%",
+    start: "top 82%",
     introY: 18,
-    itemY: 24,
-    itemStagger: 0.1
+    itemY: 18,
+    itemStagger: 0.08
   });
+
   useSectionReveal(servicesRef, {
     introSelector: "[data-reveal-intro]",
     itemSelector: "[data-reveal-item]",
-    start: "top 84%",
+    start: "top 82%",
     introY: 18,
-    itemY: 26,
-    itemStagger: 0.12
+    itemY: 20,
+    itemStagger: 0.08
   });
 
   useEffect(() => {
-    api.get("/api/settings").then((res) => setSettings({ ...settingsFallback, ...res.data })).catch(() => setSettings(settingsFallback));
-    api.get("/api/services").then((res) => setServices(res.data)).catch(() => setServices(servicesFallback));
+    api
+      .get("/api/settings")
+      .then((res) => setSettings({ ...settingsFallback, ...res.data }))
+      .catch(() => setSettings(settingsFallback));
   }, []);
-  const categories = useMemo(() => [...new Set(services.map((service) => service.category).filter(Boolean))], [services]);
+
+  const contactList = contactItems(settings);
 
   return (
-    <main>
-      <section className="bg-black py-20 text-white">
-        <div className="container-pad" ref={heroRef}>
-          <p className="mb-4 text-sm font-black uppercase tracking-[0.22em] text-chrome" data-hero-reveal="eyebrow">{settings.companyName} Services</p>
-          <h1 className="max-w-4xl text-4xl font-black leading-tight sm:text-5xl">
-            <span className="block" data-hero-reveal="title">Professional construction services for planning, execution,</span>
-            <span className="block" data-hero-reveal="title">supervision, and handover.</span>
-          </h1>
-          <p className="mt-5 max-w-2xl leading-7 text-zinc-300" data-hero-reveal="subtitle">Complete house construction and finishing services with accountable coordination, practical timelines, and quality checks.</p>
+    <main className="services-page">
+      <section className="services-page__introSection" ref={introRef}>
+        <div className="services-page__container">
+          <div className="services-page__intro">
+            <p className="services-page__eyebrow" data-reveal-intro>
+              OUR SERVICES
+            </p>
+            <h1 className="services-page__heroTitle" data-reveal-intro>
+              <span className="services-page__heroLine">Built on Experience.</span>
+              <span className="services-page__heroLine">
+                Delivered with <span className="services-page__heroAccent">Excellence.</span>
+              </span>
+            </h1>
+            <p className="services-page__heroText" data-reveal-intro>
+              Quality Construction delivers residential, commercial, and renovation services with disciplined
+              supervision, transparent communication, and quality finishes that last.
+            </p>
+          </div>
         </div>
       </section>
-      <section className="bg-zinc-50 py-16">
-        <div className="container-pad" ref={categoriesRef}>
-          <div data-reveal-intro>
-            <SectionTitle eyebrow="Categories" title="Service capability by construction stage" align="center" />
+
+      <section className="services-page__section" ref={servicesRef}>
+        <div className="services-page__container">
+          <div className="services-page__sectionHeader" data-reveal-intro>
+            <p className="services-page__eyebrow">WHAT WE DO</p>
+            <h2 className="services-page__sectionTitle">
+              Our Specialized <span>Services</span>
+            </h2>
+            <p className="services-page__sectionText">
+              From custom homes to commercial spaces and renovation work, we plan every project around quality,
+              efficiency, and a clean execution process.
+            </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {categories.map((category) => <div key={category} className="rounded-lg border border-zinc-200 bg-white p-5 text-center font-black shadow-sm" data-reveal-item>{category}</div>)}
-          </div>
-        </div>
-      </section>
-      <section className="py-20">
-        <div className="container-pad" ref={servicesRef}>
-          <div data-reveal-intro>
-            <SectionTitle eyebrow="What We Do" title="A to Z construction capability" text="Each service is managed from the admin panel, including category, features, image, and detailed description." align="center" />
-          </div>
-          <div className="-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-3 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 lg:grid-cols-3">{services.map((service) => <div key={service._id} className="min-w-[85%] snap-start md:min-w-0"><ServiceCard service={service} /></div>)}</div>
-        </div>
-      </section>
-      <section className="bg-black py-20 text-white">
-        <div className="container-pad grid gap-10 lg:grid-cols-2 lg:items-center">
-          <SectionTitle eyebrow={`Why Choose ${settings.companyName}`} title="Clear scope, supervised sites, and premium finishing standards" text="Our process keeps budgets visible, material choices documented, and daily site execution aligned with the approved plan." theme="dark" />
-          <div className="grid gap-4">
-            {["Transparent estimates and milestone billing", "Skilled labour with site supervision", "Material coordination and quality checks", "Practical timelines with regular updates"].map((item) => (
-              <div key={item} className="flex gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-4"><CheckCircle2 className="shrink-0 text-chrome" /><span className="font-semibold">{item}</span></div>
+
+          <div className="services-page__cardsGrid" aria-label="Service categories">
+            {services.map((service) => (
+              <ServiceCard key={service.number} {...service} />
             ))}
           </div>
-        </div>
-      </section>
-      <section className="bg-chrome py-16">
-        <div className="container-pad flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div><h2 className="text-3xl font-black text-black">Need a construction estimate?</h2><p className="mt-2 font-semibold text-zinc-800">Share your requirement and get a practical execution plan.</p></div>
-          <Link to="/contact" className="btn-dark">Contact Us</Link>
+
+          <div className="services-page__benefitsStrip" data-reveal-item>
+            <div className="services-page__benefitsGrid" aria-label="Construction benefits">
+              {benefits.map((benefit) => (
+                <BenefitCard key={benefit.title} {...benefit} />
+              ))}
+            </div>
+          </div>
+
+          <div className="services-page__ctaBanner" data-reveal-item>
+            <div className="services-page__ctaCopy">
+              <div className="services-page__ctaIconWrap" aria-hidden="true">
+                <HardHat size={20} strokeWidth={2.2} />
+              </div>
+              <div className="services-page__ctaTextWrap">
+                <h3 className="services-page__ctaTitle">Have a Project in Mind?</h3>
+                <p className="services-page__ctaText">Let&apos;s build something remarkable together.</p>
+              </div>
+            </div>
+            <Link className="services-page__ctaButton" to="/contact">
+              <span>Get a Free Consultation</span>
+              <ArrowRight size={15} strokeWidth={2.5} />
+            </Link>
+          </div>
+
+          <div className="services-page__contactStrip" id="services-contact" data-reveal-item>
+            <div className="services-page__contactGrid" aria-label="Contact information">
+              {contactList.map((item) => (
+                <ContactItem key={item.label} {...item} />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </main>
