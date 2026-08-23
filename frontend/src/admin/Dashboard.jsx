@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Boxes, FileCheck2, FileText, FolderKanban, Inbox, ListChecks, ReceiptText, Settings, ShieldCheck, SlidersHorizontal, Users } from "lucide-react";
+import { Inbox, SlidersHorizontal } from "lucide-react";
 import api from "../api/axios";
 
 const modules = [
   { title: "Website Settings", description: "Manage website, company, logo, and PDF settings.", path: "/secure-admin-dashboard/settings", icon: SlidersHorizontal },
-  { title: "Workflow", description: "Edit construction workflow steps shown on the website.", path: "/secure-admin-dashboard/workflow", icon: ListChecks },
-  { title: "Trusted Section", description: "Manage trust cards, icons, text, and images.", path: "/secure-admin-dashboard/trusted", icon: ShieldCheck },
-  { title: "Items", description: "Create and import item rates for estimates and invoices.", path: "/secure-admin-dashboard/items", icon: Boxes },
-  { title: "Clients", description: "Manage client records and project contact details.", path: "/secure-admin-dashboard/clients", icon: Users },
-  { title: "Agreement", description: "Create, preview, and download house construction agreements.", path: "/secure-admin-dashboard/agreements", icon: FileCheck2 },
-  { title: "Agreement Settings", description: "Manage the default agreement master template.", path: "/secure-admin-dashboard/agreements/template", icon: FileCheck2 },
-  { title: "Estimates", description: "Create, view, convert, and download estimate PDFs.", path: "/secure-admin-dashboard/estimates", icon: FileText },
-  { title: "Quotations", description: "Create quotations and download professional PDFs.", path: "/secure-admin-dashboard/quotations", icon: ReceiptText },
-  { title: "Invoices", description: "Create invoices and track billing documents.", path: "/secure-admin-dashboard/invoices", icon: ReceiptText },
-  { title: "Blogs", description: "Publish and manage website blog posts.", path: "/secure-admin-dashboard/blogs", icon: FileText },
-  { title: "Projects", description: "Manage current and completed project listings.", path: "/secure-admin-dashboard/projects", icon: FolderKanban },
-  { title: "Services", description: "Manage service cards, images, features, and icons.", path: "/secure-admin-dashboard/services", icon: Settings },
   { title: "Leads", description: "Review incoming contact and estimate requests.", path: "/secure-admin-dashboard/leads", icon: Inbox }
 ];
 
 const Dashboard = () => {
-  const [stats, setStats] = useState({ blogs: 0, projects: 0, services: 0, leads: 0 });
+  const [stats, setStats] = useState({ leads: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([api.get("/api/blogs"), api.get("/api/projects"), api.get("/api/services"), api.get("/api/leads")])
-      .then(([blogs, projects, services, leads]) => setStats({ blogs: blogs.data.length, projects: projects.data.length, services: services.data.length, leads: leads.data.length }))
+    api.get("/api/leads")
+      .then((res) => setStats({ leads: res.data.length }))
       .catch((err) => setError(err.response?.data?.message || "Could not load dashboard data."))
       .finally(() => setLoading(false));
   }, []);
 
-  const statCards = [[FileText, "Blogs", stats.blogs], [FolderKanban, "Projects", stats.projects], [Settings, "Services", stats.services], [Inbox, "Leads", stats.leads]];
+  const statCards = [[Inbox, "Leads", stats.leads]];
 
   return (
     <section className="min-w-0">

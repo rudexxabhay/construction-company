@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Clock3, Mail, MapPin, Phone } from "lucide-react";
 import api from "../api/axios";
 import SectionTitle from "../components/SectionTitle";
 import { settingsFallback } from "../data/fallbackData";
@@ -11,6 +12,27 @@ const Contact = () => {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const update = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const contactDetails = [
+    {
+      icon: Phone,
+      value: settings.phone,
+      href: `tel:${(settings.phone || "").replace(/\s+/g, "")}`
+    },
+    {
+      icon: Mail,
+      value: settings.email,
+      href: `mailto:${settings.email}`
+    },
+    {
+      icon: MapPin,
+      value: settings.address
+    },
+    {
+      icon: Clock3,
+      value: settings.workingHours || settingsFallback.workingHours
+    }
+  ];
 
   useEffect(() => {
     api.get("/api/settings").then((res) => setSettings({ ...settingsFallback, ...res.data })).catch(() => setSettings(settingsFallback));
@@ -38,11 +60,32 @@ const Contact = () => {
         <div className="container-pad grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <SectionTitle eyebrow="CONTACT US" title={settings.contactHeading} text={settings.contactDescription} />
-            <div className="grid gap-4 text-sm text-zinc-700">
-              <b>{settings.phone}</b>
-              <b>{settings.email}</b>
-              <b>{settings.address}</b>
-              <b>{settings.workingHours}</b>
+            <div className="mt-5 grid gap-3">
+              {contactDetails.map(({ icon: Icon, value, href }) => {
+                const content = (
+                  <>
+                    <span
+                      className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[rgba(245,196,0,0.12)] text-chrome"
+                      aria-hidden="true"
+                    >
+                      <Icon size={18} strokeWidth={2.2} />
+                    </span>
+                    <span className="min-w-0 break-words text-[15px] font-semibold leading-[1.5] text-[#252525]">
+                      {value}
+                    </span>
+                  </>
+                );
+
+                return href ? (
+                  <a key={value} href={href} className="flex items-start gap-2.5">
+                    {content}
+                  </a>
+                ) : (
+                  <div key={value} className="flex items-start gap-2.5">
+                    {content}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <form onSubmit={submit} className="rounded-lg border border-zinc-200 bg-white p-6 shadow-premium">
